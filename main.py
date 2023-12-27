@@ -79,7 +79,7 @@ def UsersWorstDeveloper(year: int):
         return {"Error":int(e)}
     
 
-@app.get("/sentiment-analysis/{year}")
+@app.get("/sentiment-analysis/{developer}")
 def SentimentAnalysis(developer: str):
     """
     Function to perform sentiment analysis based on the developer name.

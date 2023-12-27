@@ -121,7 +121,7 @@ def SentimentAnalysis_func(developer: str):
     sentiment_mapping = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
     sentiment_results = {sentiment_mapping.get(k, k): v for k, v in sentiment_counts.items()}
 
-    return {developer_name: sentiment_results}
+    return {developer: sentiment_results}
 
 
     
