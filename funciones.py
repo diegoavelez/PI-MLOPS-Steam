@@ -26,7 +26,8 @@ def PlayTimeGenre_func(genre: str):
     max_playtime_year = playtime_by_year.idxmax()
     max_playtime = playtime_by_year.max()
 
-    return max_playtime_year, max_playtime
+    # Construir y retornar el diccionario con el año y las horas de juego
+    return {f"Año de lanzamiento con más horas jugadas para {genre}": max_playtime_year}
 
 def UserForGenre_func(genre: str):
     """
@@ -50,7 +51,7 @@ def UserForGenre_func(genre: str):
     # Accumulate playtime by year
     playtime_by_year = filtered_data.groupby('release_year')['playtime_forever'].sum().to_dict()
 
-    return top_user, playtime_by_year
+    return {f"Usuario con más horas jugadas para Género {genre}": top_user, "Horas jugadas": playtime_by_year}
 
 def usersRecommend_func(year: int):
     """
