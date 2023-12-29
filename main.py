@@ -1,6 +1,14 @@
+import sys
 from fastapi import FastAPI
 from funciones import *
 import pandas as pd
+
+# Añadir el directorio de los módulos a sys.path
+sys.path.append("./models")
+sys.path.append("./notebooks")
+
+from preprocessing import load_and_preprocess_data
+from modelos import recomendacion_juego, recomendacion_usuario
 
 app = FastAPI()
 
@@ -96,3 +104,59 @@ def SentimentAnalysis(developer: str):
         return SentimentAnalysis_func(developer)
     except Exception as e:
         return {"Error":str(e)}
+    
+# Cargar y preprocesar los datos
+file_path = './src/data/dataset_full.csv'
+df, cosine_sim_item, user_similarity_df = load_and_preprocess_data(file_path)
+
+# Endpoints de la API
+@app.get("/recomendacion-item/{item_id}")
+async def recomendacion_por_item(item_id: int):
+    """
+    Genera una lista de juegos recomendados similares a un juego específico.
+
+    Esta función identifica juegos similares a partir de un juego dado, utilizando la similitud del coseno 
+    basada en características combinadas como géneros y desarrolladores. La función devuelve los cinco 
+    juegos más similares, excluyendo el juego de entrada.
+
+    Args:
+        item_id (int): El ID del juego para el cual se harán las recomendaciones.
+        df (pd.DataFrame): El DataFrame que contiene los datos de los juegos, incluyendo 'item_id', 'genres', y 'developer'.
+        cosine_sim (numpy.ndarray): Matriz de similitud del coseno precalculada para los juegos.
+
+    Returns:
+        list of dict: Una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
+                      de los juegos recomendados. Devuelve una lista vacía si el juego no se encuentra en el dataset.
+    
+    Ejemplo:
+        recomendaciones = recomendacion_juego(123, df, cosine_sim)
+        # Esto podría devolver juegos similares al juego con ID 123.
+    """
+    recomendaciones = recomendacion_juego(item_id, df, cosine_sim_item)
+    return {"item_id": item_id, "recomendaciones": recomendaciones}
+
+@app.get("/recomendacion-usuario/{user_id}")
+async def recomendacion_por_usuario(user_id: str):
+    """
+    Genera recomendaciones de juegos para un usuario específico basándose en usuarios similares.
+
+    Esta función busca usuarios con patrones de juego similares al usuario dado y recomienda juegos que 
+    estos usuarios similares han jugado, pero que el usuario en cuestión aún no ha probado. Utiliza la 
+    matriz de similitud del coseno entre usuarios para determinar qué usuarios son similares.
+
+    Args:
+        user_id (int): El ID del usuario para el cual se realizará la recomendación.
+        df (pd.DataFrame): El DataFrame que contiene los datos de los juegos y usuarios.
+        user_similarity_df (pd.DataFrame): DataFrame que representa la matriz de similitud del coseno entre usuarios.
+        num_recommendations (int, opcional): Número de recomendaciones a generar. Por defecto es 5.
+
+    Returns:
+        list of dict: Una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
+                      de los juegos recomendados. Devuelve una lista vacía si el usuario no se encuentra en el dataset.
+
+    Ejemplo:
+        recomendaciones_usuario = recomendacion_usuario_mod(456, df, user_similarity_df)
+        # Esto podría devolver juegos recomendados para el usuario con ID 456.
+    """
+    recomendaciones = recomendacion_usuario(user_id, df, user_similarity_df)
+    return {"user_id": user_id, "recomendaciones": recomendaciones}
