@@ -4,8 +4,8 @@ from funciones import *
 import pandas as pd
 
 # Añadir el directorio de los módulos a sys.path
-sys.path.append("./models")
-sys.path.append("./notebooks")
+sys.path.append("./src/models")
+sys.path.append("./src/features")
 
 from preprocessing import load_and_preprocess_data
 from modelos import recomendacion_juego, recomendacion_usuario
@@ -107,7 +107,7 @@ def SentimentAnalysis(developer: str):
     
 # Cargar y preprocesar los datos
 file_path = './src/data/dataset_full.csv'
-df, cosine_sim_item, user_similarity_df = load_and_preprocess_data(file_path)
+df, df_item, cosine_sim_item, user_similarity_df = load_and_preprocess_data(file_path)
 
 # Endpoints de la API
 @app.get("/recomendacion-item/{item_id}")
@@ -132,7 +132,7 @@ async def recomendacion_por_item(item_id: int):
         recomendaciones = recomendacion_juego(123, df, cosine_sim)
         # Esto podría devolver juegos similares al juego con ID 123.
     """
-    recomendaciones = recomendacion_juego(item_id, df, cosine_sim_item)
+    recomendaciones = recomendacion_juego(item_id, df_item, cosine_sim_item)
     return {"item_id": item_id, "recomendaciones": recomendaciones}
 
 @app.get("/recomendacion-usuario/{user_id}")

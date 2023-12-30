@@ -81,6 +81,28 @@ def load_and_preprocess_data(file_path):
 
     - Estas tres características juntas permiten crear un perfil de preferencias para cada usuario basado en los tipos de juegos que juegan y cuánto tiempo pasan jugándolos. La idea es que si dos usuarios han dedicado cantidades de tiempo similares a géneros similares de juegos, es probable que tengan preferencias similares y, por lo tanto, podrían disfrutar de los mismos juegos.
     """
+    
+    """
+    Debido a las limitaciones de memoria de la API, implementaremos un filtrado para los usuarios que más juegos tienen y
+    llevan más tiempo total de horas jugadas, esto nos resultará en una muestra de los datos del dataframe original 
+    para resolver el sistema de recomendación en un servidor virtual
+    """
+    
+    # Calcular métricas clave
+    user_metrics = df.groupby('user_id').agg(
+        tiempo_total_jugado=pd.NamedAgg(column='playtime_forever', aggfunc='sum'),
+        items_count=pd.NamedAgg(column='items_count', aggfunc='max')
+    ).reset_index()
+
+    # Ordenar usuarios por número de juegos jugados (items_count) y seleccionar los primeros 'max_usuarios'
+    usuarios_seleccionados = user_metrics.sort_values(by='items_count', ascending=False).head(5000)
+
+    # Obtener los IDs de los usuarios seleccionados
+    usuarios_seleccionados_ids = usuarios_seleccionados['user_id']
+
+    # Filtrar el DataFrame original para incluir solo los usuarios seleccionados
+    df = df[df['user_id'].isin(usuarios_seleccionados_ids)]
+    
     # Preprocesamiento de datos para usuario-Ítem
     
     # Agrupamos los datos por usuario y género y sumamos el tiempo total del juego por género
@@ -98,4 +120,4 @@ def load_and_preprocess_data(file_path):
     user_similarity_df = pd.DataFrame(user_similarity_user, index=user_genre_playtime_normalized.index, columns=user_genre_playtime_normalized.index)
 
 
-    return df, cosine_sim_item, user_similarity_df
+    return df, df_item, cosine_sim_item, user_similarity_df
