@@ -22,10 +22,10 @@ def PlayTimeGenre(genre: str):
     Función para encontrar el año con más horas jugadas para un género dado.
 
     Parameters:
-    género (str): El género a analizar.
+    género (str): el género a analizar.
 
     Returns:
-    int: El año con más horas jugadas para el género dado.
+    int: el año con más horas jugadas para el género dado.
     float: El total de horas jugadas en ese año para el género dado.
     """
     
@@ -41,10 +41,10 @@ def UserForGenre(genre: str):
     un género dado.
 
     Parameters:
-    género (str): El género a analizar.
+    género (str): el género a analizar.
 
     Returns:
-    str: El ID del usuario con el mayor número de horas para el género dado.
+    str: el ID del usuario con el mayor número de horas para el género dado.
     dict: Las horas de juego acumuladas por año para el género dado.
     """
     try:
@@ -59,10 +59,10 @@ def usersRecommend(year: int):
     Un juego es considerado recomendado si tiene la columna sentiment con 1 (neutral) o 2 (positivo)
 
     Parameters:
-    year (int): El año a analizar.
+    year (int): el año a analizar.
 
     Returns:
-    list: Una lista de diccionarios con el top 3 de los juegos recomendados.
+    list: una lista de diccionarios con el top 3 de los juegos recomendados.
     """
     try:
         return usersRecommend_func(year)
@@ -76,10 +76,10 @@ def UsersWorstDeveloper(year: int):
     Un juego es considerado no recomendado si la columna sentiment es cero (negativ0).
 
     Parameters:
-    year (int): El año a analizar.
+    year (int): el año a analizar.
 
     Returns:
-    list: Una lista de diccionarios con el top 3 de los desarrolladores con menos juegos recomendados.
+    list: una lista de diccionarios con el top 3 de los desarrolladores con menos juegos recomendados.
     """
     try:
         return UsersWorstDeveloper_func(year)
@@ -90,15 +90,15 @@ def UsersWorstDeveloper(year: int):
 @app.get("/sentiment-analysis/{developer}")
 def SentimentAnalysis(developer: str):
     """
-    Function to perform sentiment analysis based on the developer name.
-    It returns a dictionary with counts of user reviews categorized by sentiment.
-    Treats null values in sentiment as 'Neutral' (1).
+    Función para obtener el análisis de sentimiento basado en el nombre del desarollador.
+    Retorna un diccionario con los valores correspondientes a cada tipo de reseña, positiva, negativa o neutral.
+    Trata los valores nulos en la columna sentimiento como neutrales (1).
 
     Parameters:
-    developer_name (str): The developer's name to analyze.
+    Nombre del desarrollador (str): el nombre del desarrollador a analizar.
 
     Returns:
-    dict: A dictionary with sentiment counts.
+    dict: un diccionario con el conteo de valores para el análisis de sentimiento.
     """
     try:
         return SentimentAnalysis_func(developer)
@@ -119,14 +119,14 @@ async def recomendacion_por_item(item_id: int):
     basada en características combinadas como géneros y desarrolladores. La función devuelve los cinco 
     juegos más similares, excluyendo el juego de entrada.
 
-    Args:
-        item_id (int): El ID del juego para el cual se harán las recomendaciones.
+    Parameters:
+        item_id (int): el ID del juego para el cual se harán las recomendaciones.
         df (pd.DataFrame): El DataFrame que contiene los datos de los juegos, incluyendo 'item_id', 'genres', y 'developer'.
         cosine_sim (numpy.ndarray): Matriz de similitud del coseno precalculada para los juegos.
 
     Returns:
-        list of dict: Una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
-                      de los juegos recomendados. Devuelve una lista vacía si el juego no se encuentra en el dataset.
+        list of dict: una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
+        de los juegos recomendados. Devuelve una lista vacía si el juego no se encuentra en el dataset.
     
     Ejemplo:
         recomendaciones = recomendacion_juego(123, df, cosine_sim)
@@ -144,14 +144,14 @@ async def recomendacion_por_usuario(user_id: str):
     estos usuarios similares han jugado, pero que el usuario en cuestión aún no ha probado. Utiliza la 
     matriz de similitud del coseno entre usuarios para determinar qué usuarios son similares.
 
-    Args:
-        user_id (int): El ID del usuario para el cual se realizará la recomendación.
+    Parameters:
+        user_id (int): el ID del usuario para el cual se realizará la recomendación.
         df (pd.DataFrame): El DataFrame que contiene los datos de los juegos y usuarios.
         user_similarity_df (pd.DataFrame): DataFrame que representa la matriz de similitud del coseno entre usuarios.
         num_recommendations (int, opcional): Número de recomendaciones a generar. Por defecto es 5.
 
     Returns:
-        list of dict: Una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
+        list of dict: una lista de diccionarios, donde cada diccionario contiene 'item_id' y 'app_name' 
                       de los juegos recomendados. Devuelve una lista vacía si el usuario no se encuentra en el dataset.
 
     Ejemplo:

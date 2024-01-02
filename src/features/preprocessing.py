@@ -95,7 +95,7 @@ def load_and_preprocess_data(file_path):
     ).reset_index()
 
     # Ordenar usuarios por número de juegos jugados (items_count) y seleccionar los primeros 'max_usuarios'
-    usuarios_seleccionados = user_metrics.sort_values(by='items_count', ascending=False).head(5000)
+    usuarios_seleccionados = user_metrics.sort_values(by='items_count', ascending=False).head(7000)
 
     # Obtener los IDs de los usuarios seleccionados
     usuarios_seleccionados_ids = usuarios_seleccionados['user_id']
