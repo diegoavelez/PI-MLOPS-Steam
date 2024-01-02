@@ -1,6 +1,12 @@
 import pandas as pd
 import numpy as np
 
+
+# Carga el dataset para los endpoints
+file_path = './data/processed/processed_dataset_full.csv'
+file_path = './src/data/dataset_full.csv'
+dataset = pd.read_csv(file_path)
+
 def PlayTimeGenre_func(genre: str):
     """
     Función para encontrar el año con más horas jugadas para un género dado.
