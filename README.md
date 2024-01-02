@@ -53,38 +53,7 @@ El proyecto en concreto pretende llevar a cabo un estudio basado en Machine Lear
 # Organización del proyecto
 ------------
 
-├── Makefile           <- Makefile con comandos como `make data` o `make train` para futuras implementaciones si es necesario
-├── README.md          <- El README de nivel superior para desarrolladores que usan este proyecto.
-├── datos
-│   ├── processed     <- Los conjuntos de datos finales y canónicos para el modelado.
-│   └── raw           <- El volcado de datos original e inmutable.
-│
-├── notebooks         <- Notebooks Jupyter. La convención de nombres es un número (para el orden),
-│                         las iniciales del creador, y una descripción corta delimitada por `-`, por ejemplo,
-│                         `1.0-jqp-exploración-inicial-de-datos`.
-│
-├── references         <- Diccionarios de datos, manuales y todos los demás materiales explicativos.
-│
-│
-├── requirements.txt   <- El archivo de requisitos para reproducir el entorno de análisis, por ejemplo,
-│                         generado con `pip freeze > requirements.txt`
-│
-├── setup.py           <- hace que el proyecto sea instalable con pip (pip install -e .) para que src pueda ser importado
-├── src                <- Código fuente para usar en este proyecto.
-│   ├── __init__.py    <- Convierte src en un módulo de Python
-│   │
-│   ├── datos          <- Datasets definitivos para usar para la API del proyecto
-│   │   └── dataset_full.csv
-│   │
-│   ├── features       <- Scripts para convertir datos crudos en características para el modelado
-│   │   └── preprocessing.py
-│   │
-│   ├── models         <- Scripts para entrenar modelos y luego usar modelos entrenados para hacer
-│       │                 predicciones
-│       └── modelos.py
-│   
-│
-└── tox.ini            <- archivo tox con configuraciones para ejecutar tox; consulta tox.readthedocs.io
+<p align="center"><img src="./references/Organizacion proyecto.png"></p>
 
 # Desarrollo del proyecto
 
